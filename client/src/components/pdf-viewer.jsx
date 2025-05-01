@@ -33,7 +33,7 @@ export function PDFViewer({ url }) {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-full">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-[3px] border-transparent border-b-gray-900"></div>
       </div>
     );
   }
@@ -47,8 +47,8 @@ export function PDFViewer({ url }) {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex justify-between items-center p-2 bg-gray-100 dark:bg-gray-800 rounded-t-lg">
+    <div className="flex flex-col h-full w-full">
+      {/* <div className="flex justify-between items-center p-2 bg-gray-100 dark:bg-gray-800 rounded-t-lg">
         <div className="flex space-x-2">
           <Button variant="outline" size="sm" onClick={handleZoomOut}>
             <ZoomOut className="h-4 w-4" />
@@ -61,7 +61,7 @@ export function PDFViewer({ url }) {
           </Button>
         </div>
         <div className="text-sm">Zoom: {Math.round(zoom * 100)}%</div>
-      </div>
+      </div> */}
 
       <div className="flex-1 overflow-auto bg-gray-200 dark:bg-gray-700 p-4">
         <div

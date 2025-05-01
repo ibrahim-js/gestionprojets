@@ -45,7 +45,7 @@ export function FileViewer({ file, onClose }) {
     if (loading) {
       return (
         <div className="flex justify-center items-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-2 border-transparent border-b-gray-900"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-[3px] border-transparent border-b-gray-900"></div>
         </div>
       );
     }
@@ -59,15 +59,13 @@ export function FileViewer({ file, onClose }) {
       );
     }
 
-    // Pour la démonstration, nous allons simuler l'affichage
-    // Dans une vraie application, vous utiliseriez l'URL réelle
     if (fileType === "pdf") {
       return (
-        <div className="h-[70vh] bg-gray-100 dark:bg-gray-800 rounded-lg flex flex-col items-center justify-center">
-          <FileText className="h-16 w-16 text-gray-400 mb-4" />
+        <div className="h-[70vh] w-full bg-gray-100 dark:bg-gray-800 rounded-lg flex flex-col items-center justify-center">
+          {/* <FileText className="h-16 w-16 text-gray-400 mb-4" />
           <p className="text-gray-600 dark:text-gray-300 mb-4">
             Aperçu PDF pour {file}
-          </p>
+          </p> */}
           <PDFViewer url={fileUrl} />
           {/* <Button variant="outline" asChild>
             <a href={fileUrl || "#"} target="_blank" rel="noopener noreferrer">
@@ -109,23 +107,41 @@ export function FileViewer({ file, onClose }) {
     );
   };
 
+  // return (
+  //   <Dialog open={true} onOpenChange={onClose}>
+  //     <DialogContent className="w-[700px] max-w-[700px]">
+  //       <DialogHeader>
+  //         <DialogTitle className="px-8 flex justify-between items-center">
+  //           <span>Visualisation du fichier: {file}</span>
+  //           {/* <div className="flex space-x-2">
+  //             <Button variant="outline" size="sm" asChild>
+  //               <a href={fileUrl || "#"} download>
+  //                 <Download className="h-4 w-4 mr-2" /> Télécharger
+  //               </a>
+  //             </Button>
+  //           </div> */}
+  //         </DialogTitle>
+  //       </DialogHeader>
+  //       <div className="mt-4 w-full">{renderFileContent()}</div>
+  //     </DialogContent>
+  //   </Dialog>
+  // );
+
   return (
-    <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl">
-        <DialogHeader>
-          <DialogTitle className="px-8 flex justify-between items-center">
-            <span>Visualisation du fichier: {file}</span>
-            {/* <div className="flex space-x-2">
-              <Button variant="outline" size="sm" asChild>
-                <a href={fileUrl || "#"} download>
-                  <Download className="h-4 w-4 mr-2" /> Télécharger
-                </a>
-              </Button>
-            </div> */}
-          </DialogTitle>
-        </DialogHeader>
-        <div className="mt-4">{renderFileContent()}</div>
-      </DialogContent>
-    </Dialog>
+    <div className="fixed inset-0 flex items-center z-[1000] justify-center backdrop-blur-xs bg-black/10">
+      <div className="bg-white rounded-lg shadow-lg border h-[90vh] w-[calc(100%-5rem)]">
+        <div className="w-full py-6 px-8 flex items-center justify-between">
+          <h1 className="font-semibold text-lg">
+            Visualisation du fichier: {file}
+          </h1>
+
+          <Button variant="ghost" className="h-8 w-8" onClick={onClose}>
+            <X />
+          </Button>
+        </div>
+
+        <div className="w-full px-4">{renderFileContent()}</div>
+      </div>
+    </div>
   );
 }
