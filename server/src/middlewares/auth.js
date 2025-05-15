@@ -12,7 +12,7 @@ export async function protect(req, res, next) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       const { rows } = await db.query(
-        "SELECT id, fname, lname, email, role, created_at, updated_at FROM users WHERE id = $1",
+        "SELECT id, fname, lname, email, role, poste_ormvag, created_at, updated_at FROM users WHERE id = $1",
         [decoded.userId]
       );
 
@@ -29,4 +29,22 @@ export async function protect(req, res, next) {
 
     throw new Error("Accès refusé. Aucun token fourni.");
   }
+}
+
+export function authorizeRoles(...allowedRoles) {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res
+        .status(401)
+        .json({ message: "Non autorisé. Utilisateur non authentifié." });
+    }
+
+    if (!allowedRoles.includes(req.user.role)) {
+      return res
+        .status(403)
+        .json({ message: "Accès interdit. Rôle insuffisant." });
+    }
+
+    next();
+  };
 }

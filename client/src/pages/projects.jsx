@@ -14,12 +14,14 @@ import { ProjectsTable } from "@/components/projects-table";
 import { Loader } from "@/components/loader";
 import { getProjects, setFilter, clearFilters } from "@/store/projects-slice";
 import { getProjectSchema } from "@/config/projects-table";
+import { useAuth } from "@/hooks/auth";
 
 export default function Projects() {
   const [projectType, setProjectType] = useState(() => {
     return localStorage.getItem("projectType") || "projects1";
   });
 
+  const { user } = useAuth();
   const dispatch = useDispatch();
   const { loading, filteredProjects, filters } = useSelector(
     (state) => state.projects
@@ -66,7 +68,7 @@ export default function Projects() {
           </div>
           <div className="mt-2 sm:mt-0 text-gray-600 dark:text-gray-300">
             <span className="font-medium">Bienvenue, </span>
-            <span className="font-bold">Ibrahim</span>
+            <span className="font-bold">{user?.fname}</span>
           </div>
         </div>
 

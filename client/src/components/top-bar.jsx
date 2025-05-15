@@ -29,15 +29,15 @@ import axios from "@/api/axios-instance";
 export function TopBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { pathname } = useLocation();
-  const { user } = useAuth();
+  const { user, loading: userLoading } = useAuth();
   const navigate = useNavigate();
 
   const navItems = [
     {
       icon: LayoutDashboard,
-      label: "Tableau de bord",
-      href: "/dashboard",
-      active: pathname === "/dashboard",
+      label: "Acceuil",
+      href: "/",
+      active: pathname === "/",
     },
     {
       icon: FileText,
@@ -45,23 +45,18 @@ export function TopBar() {
       href: "/projects",
       active: pathname === "/projects",
     },
-    {
-      icon: PlusCircle,
-      label: "Ajouter un projet",
-      href: "/add-project",
-      active: pathname === "/add-project",
-    },
+    // {
+    //   icon: PlusCircle,
+    //   label: "Ajouter un projet",
+    //   href: "/add-project",
+    //   active: pathname === "/add-project",
+    // },
     {
       icon: Users,
       label: "Utilisateurs",
-      href: "/users",
-      active: pathname === "/users",
-    },
-    {
-      icon: Settings,
-      label: "Paramètres",
-      href: "/settings",
-      active: pathname === "/settings",
+      href: "/utilisateurs",
+      active: pathname === "/utilisateurs",
+      allowedRoles: ["Administrateur"],
     },
   ];
 
@@ -77,6 +72,7 @@ export function TopBar() {
     }
   }
 
+  if (userLoading) return <></>;
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-white dark:bg-gray-900 dark:border-gray-800">
       <div className="container mx-auto px-4">
@@ -90,28 +86,36 @@ export function TopBar() {
 
           {/* Navigation - Desktop */}
           <nav className="flex-1 hidden lg:flex items-center lg:justify-center space-x-4">
-            {navItems.map((item, index) => (
-              <Link
-                key={index}
-                to={item.href}
-                className={cn(
-                  "flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                  item.active
-                    ? "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
-                )}
-              >
-                {/* <item.icon
+            {navItems
+              .filter((item) => {
+                // Show item if no allowedRoles or if user's role is allowed
+                return (
+                  !item.allowedRoles || item.allowedRoles.includes(user.role)
+                );
+              })
+              .map((item, index) => (
+                <Link
+                  key={index}
+                  to={item.href}
                   className={cn(
-                    "mr-2 h-4 w-4",
+                    "flex items-center rounded-md px-2 py-2 text-xs font-medium transition-colors",
                     item.active
-                      ? "text-gray-900 dark:text-white"
-                      : "text-gray-400 dark:text-gray-500"
+                      ? "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
                   )}
-                /> */}
-                <span>{item.label}</span>
-              </Link>
-            ))}
+                >
+                  {/* Uncomment if you want icons:
+                    <item.icon
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        item.active
+                          ? "text-gray-900 dark:text-white"
+                          : "text-gray-400 dark:text-gray-500"
+                      )}
+                    /> */}
+                  <span>{item.label}</span>
+                </Link>
+              ))}
           </nav>
 
           {/* User Profile & Mobile Menu Button */}
@@ -136,16 +140,22 @@ export function TopBar() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => navigate("/profil")}
+                >
                   <User className="mr-2 h-4 w-4" />
                   <span>Mon profil</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                {/* <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => navigate("/profil")}
+                >
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Paramètres</span>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout}>
+                <DropdownMenuItem className="cursor-pointer" onClick={logout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Déconnexion</span>
                 </DropdownMenuItem>
@@ -199,13 +209,13 @@ export function TopBar() {
                   <span>{item.label}</span>
                 </Link>
               ))}
-              <button
+              {/* <button
                 className="flex items-center rounded-md px-3 py-2 text-sm font-medium transition-colors text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
-                onClick={() => console.log("Déconnexion")}
+                onClick={logout}
               >
                 <LogOut className="mr-2 h-4 w-4 text-gray-400 dark:text-gray-500" />
                 <span>Déconnexion</span>
-              </button>
+              </button> */}
             </nav>
           </div>
         )}

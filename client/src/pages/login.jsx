@@ -43,7 +43,7 @@ export default function LoginPage() {
 
       setLoading(false);
 
-      navigate("/dashboard");
+      navigate("/");
     } catch (err) {
       const msg = err.response?.data?.message || "Une erreur est survenue.";
       setLoading(false);
@@ -57,7 +57,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!loadingUser && user) {
-      navigate("/dashboard");
+      navigate("/");
     }
   }, [user, loadingUser]);
 

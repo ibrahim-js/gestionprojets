@@ -7,12 +7,20 @@ import {
   registerUser,
   updateUserProfile,
   getMe,
+  fetchUsers,
+  deleteUser,
+  updateUserByAdmin,
 } from "../controllers/users.js";
-import { protect } from "../middlewares/auth.js";
+import { authorizeRoles, protect } from "../middlewares/auth.js";
 
 const router = express.Router();
 
-router.post("/", registerUser);
+router
+  .route("/")
+  .post(protect, authorizeRoles("Administrateur"), registerUser)
+  .get(protect, authorizeRoles("Administrateur"), fetchUsers)
+  .put(protect, authorizeRoles("Administrateur"), updateUserByAdmin)
+  .delete(protect, authorizeRoles("Administrateur"), deleteUser);
 router.post("/auth", authUser);
 router.post("/logout", logoutUser);
 router

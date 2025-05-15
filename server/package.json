@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/server.js"
+    "dev": "supervisor ./src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,6 @@
     "pg": "^8.15.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
+    "supervisor": "^0.12.0"
   }
 }

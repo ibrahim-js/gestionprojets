@@ -1,10 +1,13 @@
 import { StatisticsCards } from "@/components/statistics-cards";
 import { Layout } from "@/components/layout";
+import { useAuth } from "@/hooks/auth";
 
 export default function Dashboard() {
   const totalProjects = 15;
   const todayProjects = 2;
   const totalUsers = 15;
+
+  const { user } = useAuth();
 
   return (
     <Layout>
@@ -15,7 +18,7 @@ export default function Dashboard() {
           </h1>
           <div className="mt-2 sm:mt-0 text-gray-600 dark:text-gray-300">
             <span className="font-medium">Bienvenue, </span>
-            <span className="font-bold">Ibrahim</span>
+            <span className="font-bold">{user?.fname}</span>
           </div>
         </div>
 
